@@ -1,0 +1,15 @@
+---
+- hosts: localhost
+  gather_facts: no
+  tasks:
+    - command: virsh net-dhcp-leases default
+      register: list_dhcp
+    - set_fact:
+        vm_ip: "{{ list_dhcp.stdout | to_json }}"
+    - debug:
+        var: vm_ip
+    - name: pars
+      command: python playbooks/pars.py {{ list_dhcp.stdout_lines | to_json }}
+      
+
+

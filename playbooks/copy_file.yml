@@ -1,0 +1,18 @@
+---
+- hosts: jenkins
+  become: yes
+  tasks:
+  - name: Copy scripts and file
+    template: 
+      src: templates/list_passwd.sh
+      dest: /tmp/
+      mode: 0755
+      #    with_fileglob:
+      #- ../templates/
+
+  - name: Run scripts
+    shell: /tmp/list_passwd.sh /root/users.txt
+    register: result
+
+  - debug: var=result.stdout|lower
+

@@ -1,0 +1,62 @@
+---
+- hosts: localhost
+  user: root
+  become: yes
+  gather_facts: no
+
+  vars_files:
+    - vars/image.yml
+
+  tasks:
+  - include_vars: vars/image.yml
+  - name: Get list of VM's
+    virt: command=list_vms
+    register: virt_vm
+
+  - name: Prepear OS images
+    get_url: 
+      url: https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2
+      dest: /var/lib/libvirt/images/{{ item.name }}.qcow2 
+      mode: 0644
+      use_proxy: no
+    with_items: "{{ image }}"
+
+#        - openssl_privatekey:
+#            path: /home/ovosh/ansible/playbooks/key/ansible.com.pem
+
+#        - openssl_publickey:
+#            path: /home/ovosh/ansible/playbooks/key/ansible.com.pem
+#            privatekey_path: /etc/ssl/private/ansible.com.pem
+
+  - name: Customize image 
+    command: virt-customize -a {{item.disk.path}}/{{item.name}}.qcow2 
+      --hostname {{item.name}}
+      --edit '/etc/ssh/sshd_config:s/PasswordAuthentication no/PasswordAuthentication yes/'
+      --append-line '/etc/ssh/sshd_config:PermitRootLogin yes'
+      --root-password password:{{item.password}}
+      --ssh-inject root:string:"{{item.publickey}}"
+      --delete '/root/*-ks.cfg'
+      --uninstall cloud-init
+    with_items: "{{ image }}"
+
+  - name: Create VM
+    command: virt-install --connect=qemu:///system
+      --network=bridge:virbr0
+      -n {{item.name}}
+      --disk path={{item.disk.path}}/{{item.name}}.qcow2,format=qcow2,size=10,cache=none \
+      --ram {{item.mem}}
+      --vcpus {{item.cpu}}
+      --check-cpu
+      --os-type linux
+      --import
+    when: item.name not in virt_vm.list_vms
+    with_items: "{{ image }}"
+
+#    - name: Get list ip and hosts
+#      command: virsh net-dhcp-leases default
+#      register: list_dhcp
+
+#    - name: get IP from dhcp list
+#      set_fact:
+#        vm_ip: "{{ (list_dhcp.stdout_lines) }}"
+      

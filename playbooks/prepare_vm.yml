@@ -1,0 +1,40 @@
+---
+- hosts: jenkins
+  name: "Prepare and install jenkins  "
+  become: yes
+  gather_facts: no
+
+  vars:
+    ansible_os_family: 'RedHat'
+    ansible_distribution: 'Fedora'
+
+  pre_tasks:
+  - name: Create group
+    group:
+      name: ci-users
+      state: present
+ 
+  - name: Add users limited-ed
+    user:
+      name: limited-ed
+      createhome: no
+      shell: /bin/false
+      group: ci-users
+ 
+  - name: Add user ci-jenkins
+    user:
+      name: ci-jenkins
+      home: /home/ci-jenkins/
+      shell: /bin/bash
+      group: ci-users
+  - name: Add sudo permition for ci-jenkins    
+    lineinfile:
+      dest: "/etc/sudoers"
+      state: present
+      line: 'ci-jenkins ALL=(ALL) NOPASSWD: ALL'
+      validate: '/usr/sbin/visudo -cf %s'
+      
+#  - include: roles/tasks/git/main.yaml
+  roles:
+    - geerlingguy.java
+    - geerlingguy.jenkins

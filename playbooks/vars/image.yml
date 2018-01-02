@@ -1,0 +1,24 @@
+---
+image:
+  - name: jenkins
+    password: r00tme
+    publickey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHV9r18/k2vfGlj8yV9wwl3y6zhRyOxBGyDLCWn9sbBP7pyg7vOUhQSQRzbHY2GAjP+oBWLl+/OX9OV2z6byYgvijzZ13hgagWWoIB6RF32shPABu8eSUJdfT7ENrq9mp7cSj77NJ9MY3PudZ7UVzu4Z8fSsDi9OiZI9wUmkT7/LKh2UDh2I6zynYI9b60yLbPs3ANR26q/ZUGbSchs+bH88DlM7el0DBqxiqThAnkfNNVbo4kDSMwa3pLKpo2a5p5rDy/zEM76EHTLORrnVw3rf1HK1UImpceNEZZFN05n9u5gO3EZVLAHm9vZIcoD4Puc1mfLJ88+0kzTOHAGt7p ovosh@kh354
+    url: http://centos.osuosl.org/6/os/x86_64/
+    cpu: 2
+    mem: 2048
+    virt_type: kvm
+    os:
+      type: linux
+    disk:
+      path: /var/lib/libvirt/images
+  - name: slave
+    password: r00tme
+    publickey: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHV9r18/k2vfGlj8yV9wwl3y6zhRyOxBGyDLCWn9sbBP7pyg7vOUhQSQRzbHY2GAjP+oBWLl+/OX9OV2z6byYgvijzZ13hgagWWoIB6RF32shPABu8eSUJdfT7ENrq9mp7cSj77NJ9MY3PudZ7UVzu4Z8fSsDi9OiZI9wUmkT7/LKh2UDh2I6zynYI9b60yLbPs3ANR26q/ZUGbSchs+bH88DlM7el0DBqxiqThAnkfNNVbo4kDSMwa3pLKpo2a5p5rDy/zEM76EHTLORrnVw3rf1HK1UImpceNEZZFN05n9u5gO3EZVLAHm9vZIcoD4Puc1mfLJ88+0kzTOHAGt7p ovosh@kh354
+    url: http://centos.osuosl.org/6/os/x86_64/
+    cpu: 2
+    mem: 2048
+    virt_type: kvm
+    os:
+      type: linux
+    disk:
+      path: /var/lib/libvirt/images

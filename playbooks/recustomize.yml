@@ -1,0 +1,30 @@
+---
+- hosts: localhost
+  user: root
+  become: yes
+  gather_facts: no
+
+  vars_files:
+    - vars/image.yml
+
+  tasks:
+  - include_vars: vars/image.yml
+  - name: Get list of VM's
+    virt: command=list_vms
+    register: virt_vm
+
+
+#        - openssl_publickey:
+#            path: /home/ovosh/ansible/playbooks/key/ansible.com.pem
+#            privatekey_path: /etc/ssl/private/ansible.com.pem
+
+  - name: Customize image 
+    command: virt-customize -a {{item.disk.path}}/{{item.name}}.qcow2 
+      --hostname {{item.name}}
+      --edit '/etc/ssh/sshd_config:s/PasswordAuthentication no/PasswordAuthentication yes/'
+      --append-line '/etc/ssh/sshd_config:PermitRootLogin yes'
+      --root-password password:{{item.password}}
+      --ssh-inject root:string:"{{item.publickey}}"
+      --delete '/root/*-ks.cfg'
+      --uninstall cloud-init
+    with_items: "{{ image }}"

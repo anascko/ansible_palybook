@@ -1,0 +1,53 @@
+---
+- name: Create vm for inventary
+  user:root
+  hosts: localhost
+
+  vars_files:
+      - vars/image.yml
+
+  tasks:
+      - name: Get list of VM's
+        virt: command=list_vms
+        register: virt_vm
+
+      - name: Prepear OS images
+        get_url:
+            url: https://cloud.centos.org/centos/7/images/CentOS-7-x86_64-GenericCloud.qcow2
+            dest: /var/lib/libvirt/images/{{item.name}}.qcow2
+            mode: 0644
+
+        - openssl_privatekey:
+            path: /home/ovosh/ansible/playbooks/key/ansible.com.pem
+
+        - openssl_publickey:
+            path: /home/ovosh/ansible/playbooks/key/ansible.com.pem
+            privatekey_path: /etc/ssl/private/ansible.com.pem
+
+        command: virt-customize -a {{item.disk.path}}/{{item.name}}.qcow2 
+        --hostname {{item.name}}
+        --root-password password:{{item.password}}
+        --ssh-inject centos:string:"{{privat_key}}"
+        with_items: image
+
+      - name: Create VM
+        command: virt-install --connect=qemu:///system
+        --network=bridge:virbr0
+        -n {{item.hostname}}
+        --disk path={{item.disk.path}}/{{item.name}}.qcow2,format=qcow2,size=10,cache=none \
+        --ram {{item.mem}}
+        --vcpus {{item.cpu}}
+        --check-cpu
+        --os-type linux
+        --import
+        when: item.name not in virt_vm.list_vms
+        with_items: image
+
+      - name: Get list ip and hosts
+        command: virsh net-dhcp-leases default
+        register: list_dhcp
+
+      - name: get IP from dhcp list
+        set_fact:
+          vm_ip: "{{ (list_dhcp.stdout_lines) }}"
+        

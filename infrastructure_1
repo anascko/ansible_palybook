@@ -1,0 +1,9 @@
+localhost ansible_connection=local
+jenkins ansible_ssh_host=<IP OF MACHINE> ansible_ssh_user=<USER> ansible_ssh_password=<PASSWORD>
+slave ansible_ssh_host=<IP OF MACHINE> ansible_ssh_user=<USER> ansible_ssh_password=<PASSWORD>
+
+[masters]
+jenkins-test
+
+[slaves]
+centos7.0

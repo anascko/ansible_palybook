@@ -1,0 +1,37 @@
+---
+- hosts: jenkins
+  become: yes
+  tasks:
+#  gether_fact: yes
+  
+  - name: get master jenkins url
+    command: grep JENKINS_PORT /etc/sysconfig/jenkins
+    register: jj_port
+#  - debug: var="{{ jj_port.stdout | regex_replace('^JENKINS_PORT=', '') }}"
+# 
+  - name: Get new var
+    set_fact:
+      jenkins_port: "{{ jj_port.stdout | regex_replace('^JENKINS_PORT=', '') }}"
+      jenkins_host: "{{ ansible_ssh_host }}"
+    with_items: "{{ jj_port }}"
+    delegate_to: "{{item}}"
+    delegate_facts: True
+    with_items: "{{groups['slave']}}"
+
+#  - name: Get ip
+#    command: echo http://{{ jenkins_host }}:{{ jenkins_port }}
+#    register: print_echo
+
+- hosts: slave
+  become: yes
+  tasks:
+#  - debug: var={{ print_echo.stdout_lines }}
+  - name: Get cli jenkins on slave
+    get_url:
+      url: http://{{ jenkins_host }}:{{ jenkins_port }}/jnlpJars/jenkins-cli.jar
+      dest: /home/ci-jenkins
+      mode: 0644
+  
+  - name: Test slave get node
+    command: java -jar /home/ci-jenkins/jenkins-cli.jar -s http://{{ jenkins_host }}:{{ jenkins_port }} create-node test-jenkins --username admin --password admin
+    shell: java -jar agent.jar -jnlpUrl http://192.168.124.173:8080/computer/test/slave-agent.jnlp -secret 4f3e6e8b099dda7bdabd80eca1895dcf3aaffa6f1ad64a008c14a683a3e9e10f -workDir "/home/ci-jenkins/" & 

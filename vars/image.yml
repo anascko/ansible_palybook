@@ -1,0 +1,24 @@
+---
+image:
+    - name: jenkins
+      password: r00tme
+      publickey:
+      url: http://centos.osuosl.org/6/os/x86_64/
+      cpu: 2
+      mem: 2048
+      virt_type: kvm
+      os:
+          type: linux
+      disk:
+          path: /var/lib/libvirt/images
+    - name: slave
+      password: r00tme
+      publickey:
+      url: http://centos.osuosl.org/6/os/x86_64/
+      cpu: 2
+      mem: 2048
+      virt_type: kvm
+      os:
+          type: linux
+      disk:
+          path: /var/lib/libvirt/images
