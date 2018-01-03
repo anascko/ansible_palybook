@@ -9,6 +9,7 @@
 
   tasks:
   - include_vars: vars/image.yml
+  
   - name: Get list of VM's
     virt: command=list_vms
     register: virt_vm
@@ -51,12 +52,4 @@
       --import
     when: item.name not in virt_vm.list_vms
     with_items: "{{ image }}"
-
-#    - name: Get list ip and hosts
-#      command: virsh net-dhcp-leases default
-#      register: list_dhcp
-
-#    - name: get IP from dhcp list
-#      set_fact:
-#        vm_ip: "{{ (list_dhcp.stdout_lines) }}"
       
