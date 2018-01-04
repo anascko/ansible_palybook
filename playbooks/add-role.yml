@@ -1,8 +1,9 @@
 ---
-
 - hosts: localhost
-
   tasks:
+    - set_fact:
+        list_plugin: [script-security, command-launcher, bouncycastle-api,structs, workflow-step-api, handlebars, scm-api, workflow-api, momentjs, junit, matrix-project, shiningpanda, pam-auth, pipeline-github-lib, windows-slaves, pipeline-milestone-step, display-url-api,mailer, github,ldap, external-monitor-job, matrix-auth,groovy, antisamy-markup-formatter, branch-api, greenballs, workflow-scm-step, docker-commons, credentials, apache-httpcomponents-client-4-api, pipeline-input-step, ssh-credentials, jsch, docker-workflow, git-client, javadoc, git, node-iterator-api, pipeline-stage-step, workflow-support, durable-task, workflow-durable-task-step, plain-credentials, workflow-job, credentials-binding, jackson2-api, aws-java-sdk, pipeline-graph-analysis, aws-credentials, ace-editor, jquery-detached, workflow-cps, ec2, cloudbees-folder, ansible,git-server, matrix-groovy-execution-strategy, workflow-cps-global-lib, pipeline-rest-api, pipeline-stage-view, pipeline-build-step, pipeline-model-api, pipeline-model-extensions, workflow-multibranch, authentication-tokens, pipeline-stage-tags-metadata, pipeline-model-declarative-agent, workflow-basic-steps, pipeline-model-definition, workflow-aggregator, github-api, token-macro, github-branch-source, pipeline-github, maven-plugin,ant, run-condition, conditional-buildstep, parameterized-trigger, jquery, build-pipeline-plugin]
+
     - file:
         path:  roles
         state: absent
@@ -11,7 +12,11 @@
         command ansible-galaxy install -r requirements.yml --roles-path roles
 
     - lineinfile:
-        dest:   .gitignore
-        regexp: '^\/roles$'
-        line:   '/roles'
-        state:  present
+        dest: roles/geerlingguy.jenkins/defaults/main.yml
+        state: present
+        regexp: '^(jenkins_plugins:)(.*)'
+        line: 'jenkins_plugins: {{ list_plugin | to_json }}'
+      register: deep
+
+    - debug:
+        var: deep
