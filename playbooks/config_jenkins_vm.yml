@@ -38,3 +38,11 @@
   roles:
     - geerlingguy.java
     - geerlingguy.jenkins
+    
+  post_tasks:
+  - name: Install some packages
+    yum: state=present name={{ item }}
+    with_items:
+    - vim
+    - git
+    - wget
