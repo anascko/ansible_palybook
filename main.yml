@@ -1,0 +1,23 @@
+---
+#Configure 2 VM jenkins and slave
+
+- include: playbooks/create_deploy_env.yml
+
+#Add role jenkins and java if absent and update plugin list
+- include: playbook/add-role.yml
+
+# Setup jenkins node
+
+- include: playbooks/config_jenkins_vm.yml
+
+# Setup slave node
+
+- include: playbooks/prepare_all.yml
+
+# Copy file
+
+- include: playbooks/copy_file.yml
+
+# Deploy jenkins slave
+
+- playbooks/create-jenkins-slave.yml
