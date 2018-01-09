@@ -1,5 +1,5 @@
 ---
-- hosts: jenkins
+- hosts: all
   become: yes
   tasks:
   - name: Copy scripts and file
