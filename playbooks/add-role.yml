@@ -9,7 +9,7 @@
         state: absent
 
     - local_action:
-        command ansible-galaxy install -r  	templates/requirements.yml --roles-path roles
+        command ansible-galaxy install -r templates/requirements.yml --roles-path roles
 
     - lineinfile:
         dest: roles/geerlingguy.jenkins/defaults/main.yml
