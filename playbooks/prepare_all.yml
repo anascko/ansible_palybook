@@ -8,7 +8,7 @@
     ansible_os_family: 'RedHat'
     ansible_distribution: 'Fedora'
 
-  tasks:
+  pre_tasks:
   - name: Create group
     group:
       name: ci-users
@@ -37,3 +37,12 @@
       #  - include: roles/tasks/git/main.yaml
   roles:
     - geerlingguy.java
+    
+  post_tasks:
+  - name: Install some packages
+    yum: state=present name={{ item }}
+    with_items:
+    - vim
+    - git
+    - wget
+    
