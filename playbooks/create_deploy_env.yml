@@ -37,6 +37,7 @@
       --root-password password:{{item.password}}
       --ssh-inject root:string:"{{item.publickey}}"
       --delete '/root/*-ks.cfg'
+      --copy-in templates/ifcfg-ens3:/etc/sysconfig/network-scripts/ 
       --uninstall cloud-init
     with_items: "{{ image }}"
 
