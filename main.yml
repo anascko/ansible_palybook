@@ -1,23 +1,20 @@
 ---
-#Configure 2 VM jenkins and slave
-
-- include: playbooks/create_deploy_env.yml
-
+#When 2 VM is configured
 #Add role jenkins and java if absent and update plugin list
-- include: playbook/add-role.yml
+- import_playbook: playbooks/add-role.yml
 
 # Setup jenkins node
 
-- include: playbooks/config_jenkins_vm.yml
+- import_playbook: playbooks/config_jenkins_vm.yml
 
 # Setup slave node
 
-- include: playbooks/prepare_all.yml
+- import_playbook: playbooks/prepare_all.yml
 
 # Copy file
 
-- include: playbooks/copy_file.yml
+- import_playbook: playbooks/copy_file.yml
 
 # Deploy jenkins slave
 
-- playbooks/create-jenkins-slave.yml
+# import_playbook: playbooks/create-jenkins-slave.yml
