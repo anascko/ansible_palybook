@@ -16,7 +16,7 @@ jenkins_jar_location: /opt/jenkins-cli.jar
 jenkins_url_prefix: ""
 jenkins_java_options: "-Djenkins.install.runSetupWizard=false"
 
-jenkins_plugins: [shiningpanda, greenballs, git, gitscm, ec2, pipeline, groovy]
+jenkins_plugins: ["script-security", "command-launcher", "bouncycastle-api", "structs", "workflow-step-api", "handlebars", "scm-api", "workflow-api", "momentjs", "junit", "matrix-project", "shiningpanda", "pam-auth", "pipeline-github-lib", "windows-slaves", "pipeline-milestone-step", "display-url-api", "mailer", "github", "ldap", "external-monitor-job", "matrix-auth", "groovy", "antisamy-markup-formatter", "branch-api", "greenballs", "workflow-scm-step", "docker-commons", "credentials", "apache-httpcomponents-client-4-api", "pipeline-input-step", "ssh-credentials", "jsch", "docker-workflow", "git-client", "javadoc", "git", "node-iterator-api", "pipeline-stage-step", "workflow-support", "durable-task", "workflow-durable-task-step", "plain-credentials", "workflow-job", "credentials-binding", "jackson2-api", "aws-java-sdk", "pipeline-graph-analysis", "aws-credentials", "ace-editor", "jquery-detached", "workflow-cps", "ec2", "cloudbees-folder", "ansible", "git-server", "matrix-groovy-execution-strategy", "workflow-cps-global-lib", "pipeline-rest-api", "pipeline-stage-view", "pipeline-build-step", "pipeline-model-api", "pipeline-model-extensions", "workflow-multibranch", "authentication-tokens", "pipeline-stage-tags-metadata", "pipeline-model-declarative-agent", "workflow-basic-steps", "pipeline-model-definition", "workflow-aggregator", "github-api", "token-macro", "github-branch-source", "pipeline-github", "maven-plugin", "ant", "run-condition", "conditional-buildstep", "parameterized-trigger", "jquery", "build-pipeline-plugin"]
 jenkins_plugins_state: present
 jenkins_plugin_updates_expiration: 86400
 jenkins_plugin_timeout: 30
@@ -25,7 +25,7 @@ jenkins_admin_username: admin
 jenkins_admin_password: admin
 jenkins_admin_password_file: ""
 jenkins_admin_token: ""
-jenkins_admin_token_file: ""
+jenkins_admin_token_file: /var/lib/jenkins/adm_token
 
 jenkins_process_user: jenkins
 jenkins_process_group: "{{ jenkins_process_user }}"
