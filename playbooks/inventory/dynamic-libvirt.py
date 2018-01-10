@@ -6,7 +6,7 @@ import json
 def _prepare_inventory():
     hostvars = {}
     groups = {}
-    groups.update({'slave': {'hosts': []}})
+    groups.update({'slaves': {'hosts': []}})
     groups.update({'master': {'hosts': []}})
     return (groups, hostvars)
 def main():
@@ -22,13 +22,16 @@ def main():
         host={inser['hostname']: param }
         if inser['hostname'] == 'jenkins':
             group_name = 'master'
+        elif inser['hostname'] is None:
+             inser['hostname'] = 'some_slave'
+             group_name = 'slaves'
         else:
-            group_name = 'slave'
+            group_name = 'slaves'
         groups[group_name]['hosts'].append(inser['hostname'])
         hostvars.update(host)
     inventory = {'_meta': {'hostvars': hostvars}}
     inventory.update(groups)
-    print(json.dumps(inventory, indent=2))
+    print(json.dumps(inventory, sort_keys = True, indent=2))
 
 if __name__ == '__main__':
     main()
