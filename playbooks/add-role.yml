@@ -21,8 +21,8 @@
     - debug:
         var: deep
 
-    - lineinfile:
-        dest: roles/geerlingguy.jenkins/defaults/main.yml
-        state: present
-        regexp: '^jenkins_admin_token_file:'
-        line: 'jenkins_admin_token_file: /var/lib/jenkins/adm_token'
+#    - lineinfile:
+#        dest: roles/geerlingguy.jenkins/defaults/main.yml
+#        state: present
+#        regexp: '^jenkins_admin_token_file:'
+#        line: 'jenkins_admin_token_file: /var/lib/jenkins/adm_token'
